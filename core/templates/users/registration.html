@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="static/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <style type="text/css">
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    {% for mesg in get_flashed_messages() %}
+                                        <div class="alert alert-danger" id="successMessage" style="color: red; text-align: center;">
+                                          <h4>{{ mesg }}</h4>
+                                        </div>
+                                          {% endfor %}
+                    <form method="POST" action="{{url_for('user.Post_register')}}" id="registration_form" class="signup-form">
+                        <h2 class="form-title">Create account</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="name" value = "{{ data.name}}" id="name" placeholder="Your Name"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" name="email" id="email" value = "{{ data.email}}" placeholder="Your Email"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="mobile" value = "{{ data.mobile}}" id="mobile" placeholder="Your Mobile"/>
+                        </div>
+                        
+          <div class="form-group">
+            <div > <label style="color:black !important"> Gender </label>  </div>
+            
+          
+            <input type="radio" name="gender" value="Male"> Male &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="gender" value="Female"> Female&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="gender" value="Transgender"> Transgender&nbsp;&nbsp;&nbsp;</input>
+            <br/>
+            <span class="error" name="gendererror" id="gendererror"></span>
+          </div>   
+           <div class="form-group row">
+                              <div class="col-sm-12" >
+                                 <select class = "form-input" id = "state" name = "state">
+                                    <option value = "" id = "select">Select state</option>
+                                    {% if states %}
+                                    {% for state in states %}
+                                    <option value = "{{state.state_id}}"> {{state.state_name}} </option>
+                                       {% if state.state_name == "Tamil Nadu" %}
+                                            <option value = "{{state.state_id}}" selected> {{state.state_name}} </option>
+                                       {% endif %}
+                                    {% endfor %}
+                                    {% endif %}
+
+                                 </select>
+                              </div>
+                           </div>         
+        
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
+                            <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="confirm_password" id="confirm_password" placeholder="Repeat your password"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="submit" name="submit_btn" id="submit_btn" class="form-submit" value="Sign up"/>
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Have already an account ? <a href="{{url_for('user.Login')}}" class="loginhere-link">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="static/vendor/jquery/jquery.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+ <script  type= "text/javascript"  src="{{ ('../static/js/jquery.min.js')}}"></script>
+      <script  type= "text/javascript"  src="{{ ('../static/js/jquery.validate.min.js')}}"></script>
+      <script  type= "text/javascript"  src="{{ ('../static/js/bootstrap.min.js')}}"></script>
+<script type="text/javascript">
+         $(document).ready(function(){
+          // alert('hi baby');
+             
+         
+             $("#submit_btn").click(function() {
+                 validate_register_form()
+                 $("#alert-success").hide()
+                 $("#alert-danger").hide()
+             })
+
+             function isNumberKey(evt){
+               var charCode = (evt.which) ? evt.which : evt.keyCode
+               if (charCode > 31 && (charCode < 48 || charCode > 57))
+                  return false;
+               return true;
+            }
+            
+            function validate_register_form()
+         {
+         
+             errorclass : 'error',
+         
+             $("#registration_form").validate({
+                
+                 rules : {
+                     name : "required",
+                     email : {
+                         required : true,
+                         email : true
+                     },
+                     mobile : {
+                         required : true,
+                         minlength : 10,
+                         maxlength : 15
+                     },
+                     gender : "required",
+                     state : "required",
+                     password : "required",
+                     confirm_password : "required",
+                 },
+         
+                 messages : {
+                     name : "Please enter the Name",
+                     email_id : {
+                         required : "Please enter the Email id",
+                         email : "Please enter valid Email Id"
+                     },
+                     mobile : {
+                         required : "Please enter Mobile number",
+                         maxlength : "Mobile number provided is too long"
+                     },
+                     gender : "Please select your gender",
+                     state : "Please select the state",
+                     password : "Please enter the Password",
+                     confirm_password : "Please enter the Confirm Password",
+                 },
+                 highlight: function(element) {
+                     $(element).parent().addClass('error')
+                 },
+             
+                 unhighlight: function(element) {
+                     $(element).parent().removeClass('error')
+                 },
+         
+                 submitHandler: function(form) {
+                     form.submit();
+                 }
+             })
+                
+         }
+
+         
+   
+         })
+         </script>
+
+</html>

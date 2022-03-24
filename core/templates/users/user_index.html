@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> User Index</title>
+      <link rel="stylesheet" href="static/css/bootstrap.min.css" >
+      <!-- <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"> -->
+      <!--<link rel="stylesheet" type="text/css" href="../static/css/jquery.dataTables.min.css">  -->
+      <style>
+         body  {
+         background-repeat: no-repeat;
+         background-size: 100%;
+         /* height: 80vh; */
+         background-color: #010424;
+         background-position: fixed;
+         }
+
+         @media screen and (max-width: 600px) {
+
+   .mobile-responsive table {
+      border: 0;
+      border-collapse: collapse;
+    }
+
+   .mobile-responsive table thead {
+      display: none;
+    }
+
+   .mobile-responsive table tr {
+      margin-bottom: 20px;
+      display: block;
+      border-bottom: 2px solid #7b0700;
+   box-shadow: 2px 2px 1px #dadada;
+   border-collapse: collapse;
+
+    }
+
+   .mobile-responsive table td {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      border-collapse: collapse;
+    }
+
+   .mobile-responsive table td:last-child {
+      border-bottom: 0;
+    }
+
+   .mobile-responsive table td::before {
+      content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .mobile-responsive tbody{
+      line-height:0!important;
+    }
+
+  }
+      </style>
+   </head>
+   <body>
+      <br/><br/>
+      <div class="col-12 text-right">
+         <!-- <a href="{{url_for('user.Adduser')}}" style="align-items: center;color:#f7d5a2" title="image" class="btn btn-lg btn-primary">
+            Add User<i class='fas fa-angle-right'></i> </a> -->
+         {% for mesg in get_flashed_messages() %}
+         <div class="alert alert-danger" id="successMessage" style="color: red; text-align: center;">
+            <h4>{{ mesg }}</h4>
+         </div>
+         {% endfor %}
+          <label style="color: white;"><b>Welcome {{name}}</b> </label> 
+         <a href="{{url_for('user.Logout')}}" style="align-items: center;color:#f7d5a2" title="image" class="btn btn-lg btn-danger">
+         Logout<i class='fas fa-angle-right'></i> </a>
+      </div>
+      <div  style="background-color: white;">
+         <div class="row" style="height: vh100 !important;">
+            <div class="col-12 text-center" >
+               <h2 style="color: #800000;"> User Index</h2>
+            </div>
+         </div>
+         <div class="mobile-responsive">
+            <table class="table table-striped" id="myTable"  style="width: 100%;overflow: none">
+               <thead style="background-color: grey;color: white;">
+                  <tr >
+                     <th scope="col" >ID</th>
+                     <th scope="col">Name</th>
+                     <th scope="col">Email</th>
+                     <th scope="col">Mobile</th>
+                     <th scope="col">Gender</th>
+                     <th scope="col">Password</th>
+                     <th scope="col" colspan="2"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for row in user_data %}
+                  <tr>
+                     <td data-label="ID">{{  row.user_id }}</td>
+                     <td data-label="Name">{{row.name|default('')}}</td>
+                     <td data-label="Email">{{ row.email|default('')}}</td>
+                     <td data-label="Mobile"> {{row.mobile|default('')}}</td>
+                     <td data-label="Gender"> {{row.gender|default('')}}</td>
+                     <td data-label="Password"> {{row.password|default('')}}</td>
+                     <td data-label="Delete"><button type="button" name="delete_button"> <a  href="{{ url_for('user.Delete_user', id = row.user_id) }}">
+                        Delete</a> </button>
+                     </td>
+                     <td data-label="Edit"><button type="button" name="edit_button" > <a  href="{{ url_for('user.Edit_user', id=row.user_id) }}">
+                        Edit</a> </button> 
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </body>
+   <script src="/static/js/jquery.min.js" charset="utf-8"></script>
+   <script src="/static/js/jquery.validate.js" charset="utf-8"></script>
+   <script src="/static/js/popper.min.js" charset="utf-8"></script>
+   <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+   <script language="JavaScript" type="text/javascript" src="/static/js/jquery.dataTables.min.js"></script>
+   <!-- <script type="text/javascript">
+      $(document).ready( function () 
+      {
+       $('#myTable').DataTable();
+      } );
+      </script> -->
+   <script type="text/javascript">window.setTimeout("document.getElementById('successMessage').style.display='none';", 6000); </script>
+</html>
